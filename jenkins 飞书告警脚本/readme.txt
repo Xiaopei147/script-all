@@ -1,0 +1,2 @@
+#
+这是一个Jenkins过程推送到飞书的告警脚本，注意，因为脚本需要变量(jenkins的变量传进来)，所以一定要勾选Jenkins的构建环境中的：Set jenkins user build variables选项，并且该脚本要放在构建中执行不能发到构建后操作，否则会影响构建的结果输出

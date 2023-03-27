@@ -5,7 +5,7 @@ import sys
 import os
 import datetime
 
-os.system('./usr/lib/zabbix/alertscripts/curl.sh')
+os.system('./usr/lib/zabbix/alertscripts/curl.sh') #调用@人员脚本，可调整位置，放在末尾即可实现末尾@人员
 url = "https://open.feishu.cn/open-apis/bot/v2/hook/XXXXXXXXXX" #你复制的webhook地址粘贴进url内
 
 
