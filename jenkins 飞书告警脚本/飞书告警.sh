@@ -2,7 +2,8 @@
 JOB_URL="${JENKINS_URL}job/${JOB_NAME}"
 getBuildState(){
   buildNr=$1
-  curl -u jenkins_user:passwd  ${JOB_URL}/${buildNr}/api/json |grep -Po '"result":\s*"\K\w+'
+  ####下面需要添加Jenkins的用户信息；
+  curl -u jenkins_user:passwd  ${JOB_URL}/${buildNr}/api/json |grep -Po '"result":\s*"\K\w+' 
 }
 
 state=$(getBuildState ${BUILD_NUMBER}  )
