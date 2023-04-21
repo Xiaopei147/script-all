@@ -1,6 +1,8 @@
 #!/bin/bash
 #create user pgs; add time 2023/4/7
 
+#下面的export要根据自己的变量调整（通常再/etc/profile）下，为了避免提示done命令找不到！
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin:/usr/local/mysql/bin:/usr/local/php/bin:/usr/local/redis/bin/:$PATH
 BACKUP=/opt/backup/db
 hostname=`hostname`
 DATETIME=$(date +%Y_%m_%d_%H%M%S)
