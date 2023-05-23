@@ -17,6 +17,11 @@ root     18908 18839  0 10:37 pts/1    00:00:00 grep --color=auto kdevtmpfsi
 kill -9 16376 18897
 然后就没了
 
+redis创建用户：
+
+acl setuser bbb  #创建用户
+acl setuser bbb on >123 +@all #添加密码
+acl setuser bbb ~* +get #授权
 
 find 查找某年的文件
 find . -newermt "2021-01-01" ! -newermt "2021-12-31" -name "*.tar.gz"
