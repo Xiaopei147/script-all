@@ -1,0 +1,11 @@
+从下载站下载扩展包
+https://pecl.php.net/package/memcached
+下载3.0.4版本 ， 是php7通用的版本
+
+cd /usr/local  
+tar zxvf memcached-3.0.4.tgz 
+cd memcached-3.0.4 
+/usr/local/php/bin/phpize 
+./configure --enable-memcached --with-php-config=/usr/local/php/bin/php-config --with-libmemcached-dir=/usr/local/libmemcached --disable-memcached-sasl 
+make; make install 
+

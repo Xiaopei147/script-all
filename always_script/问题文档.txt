@@ -1,0 +1,74 @@
+安装php
+
+1. visibility=hidden   -c /data/software/php-7.0.33/ext/zip/php_zip.c -o ext/zip/php_zip.lo 
+In file included from /data/software/php-7.0.33/ext/zip/php_zip.h:31:0,
+                 from /data/software/php-7.0.33/ext/zip/php_zip.c:31:
+/usr/local/include/zip.h:59:21: 致命错误：zipconf.h：没有那个文件或目录
+ #include <zipconf.h>
+                     ^
+编译中断。
+
+
+解决方法：cp /usr/local/lib/libzip/include/zipconf.h /usr/local/include/zipconf.h
+
+
+2. libzip notfound
+解压libzip压缩包，进目录，配置，   编译，    编译安装
+ tar                      cd          config   make     make install
+
+
+3.安装扩展前执行phpize
+Cannot find config.m4. 
+Make sure that you run './phpize' in the top level source directory of the module
+
+解决方法：从php源码包中找到.m4复制过来
+cp /data/software/php-7.0.33/ext/openssl/config0.m4 config.m4
+
+4.执行phpize找不到autoconf
+[root@localhost phpredis-5.0.2]# phpize
+Configuring for:
+PHP Api Version:         20151012
+Zend Module Api No:      20151012
+Zend Extension Api No:   320151012
+Cannot find autoconf. Please check your autoconf installation and the
+$PHP_AUTOCONF environment variable. Then, rerun this script.
+
+解决方法：yum -y install autoconf
+
+5.没有oniguruma
+
+解决方法：
+yum -y install https://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/o/oniguruma-6.8.2-2.el7.x86_64.rpm
+yum -y install https://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/o/oniguruma-devel-6.8.2-2.el7.x86_64.rpm
+
+6.configure: error: Package requirements (libsodium >= 1.0.8) were not met:
+No package 'libsodium' found
+
+解决办法
+wget https://download.libsodium.org/libsodium/releases/libsodium-1.0.18-stable.tar.gz
+tar -zxf libsodium-1.0.18-stable.tar.gz
+cd libsodium-stable
+./configure 
+make && make install
+ 
+方法一：临时生效，重新登录即失效
+export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
+方法二：永久生成
+vim /etc/profile
+在profile文件加上
+export  PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
+然后执行
+source /etc/profile
+
+
+7.configure: error: Package requirements (sqlite3 > 3.7.4) were not met:
+
+No package 'sqlite3' found
+
+解决办法：
+yum -y install sqlite-devel
+
+
+
+
+

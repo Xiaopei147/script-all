@@ -1,0 +1,15 @@
+解压缩包
+tar xf phpredis-5.0.2.tar.gz
+
+cd phpredis-5.0.2/
+
+./configure --with-php-config=/usr/local/php/bin/php-config
+
+make && make install
+
+
+在/usr/local/php/etc/php.ini末尾追加extension=redis.so
+
+
+重启php
+systemctl restart php-fpm

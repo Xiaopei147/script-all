@@ -1,0 +1,109 @@
+处理挖矿  kdevtmpfsi
+[root@app-tiktok-online ~]# ps -ef |grep kdevtmpfsi
+www      18897     1 99 10:37 ?        00:00:10 /tmp/kdevtmpfsi
+root     18908 18839  0 10:37 pts/1    00:00:00 grep --color=auto kdevtmpfsi
+
+[root@app-tiktok-online ~]# systemctl status 18897
+● php-fpm.service - PHP FastCGI Service
+   Loaded: loaded (/usr/lib/systemd/system/php-fpm.service; enabled; vendor preset: disabled)
+   Active: active (running) since Thu 2023-05-04 12:08:15 CST; 22h ago
+  Process: 13996 ExecStop=/bin/kill -SIGINT (code=exited, status=1/FAILURE)
+ Main PID: 13998 (php-fpm)
+   CGroup: /system.slice/php-fpm.service
+           ├─13998 php-fpm: master process (/usr/local/php/etc/php-fpm.conf)
+           ├─14001 php-fpm: pool www
+           ├─16376 /tmp/kinsing
+           └─18897 /tmp/kdevtmpfsi
+kill -9 16376 18897
+然后就没了
+
+
+find 查找某年的文件
+find . -newermt "2021-01-01" ! -newermt "2021-12-31" -name "*.tar.gz"
+删除某个目录下2021年的文件
+find . -newermt "2021-01-01" ! -newermt "2021-12-31" -name "*.tar.gz" -exec rm -rf {} \;
+
+
+清理history相关
+sed -i 'n,1000d' -i ~/.bash_history && history -c && history -r
+#n表示从那一条之后开始清理
+
+MySQL查看正在执行的命令
+show processlist;
+
+MySQL8.0创建用户并授权
+#创建用户
+create user 'test'@'%' identified with mysql_native_password by 'test'
+#授权
+grant all privileges on * .* to 'test'@'%';
+alter user test identified with mysql_native_password by 'test';
+flush privileges;
+
+备份数据库
+mysqldump -u root -p xuehuahua > xuehuahua.sql
+
+还原数据库
+mysql -u root -p xuehuahua < xuehuahua.sql
+
+导出数据库结构(不包含数据)
+mysqldump -uroot -p -d idongdong_stat > idongdong_stat.sql
+
+MySQL查看事件是否开启状态（on为开启 off为关闭）
+SHOW VARIABLES LIKE  'event_scheduler'
+
+设置当前事件开启
+SET GLOBAL event_scheduler = 1;
+
+使用show所有事件sql语句
+show events;
+
+查看所有正在活动的事件
+select * from information_schema.events where status = 'active';
+
+开启慢日志
+set GLOBAL slow_query_log=ON;
+
+查看慢SQL的定义时间
+show variables like 'long%';
+
+调整MySQL的慢日志阈值
+SET long_query_time=1;
+
+
+centos扫描磁盘坏道
+badblocks -s -v -o tst.txt /dev/sdb  1562692607
+
+
+
+
+压缩备份数据库
+mysqldump -hlocalhost -uroot -p  dbname  --default-character-set=utf8mb4 | gzip  > dbname.tar.gz
+还原压缩文件备份到数据库
+gunzip < dbname.tar.gz | mysql -hlocalhost -uroot -p  dbname --default-character-set=utf8mb4
+
+sed全文替换
+sed -i 's/10.10.238.200/10.10.238.201/g' zabbix_agent.conf
+把文档中的所有10.10.238.200替换成10.10.238.201
+
+查看表数据有多少条
+SELECT count(*) FROM sys_content_publish;
+
+查看所有库的总容量 （不需要改SQL里的参数）
+
+SELECT concat(round(sum(DATA_LENGTH/1024/1024),2),'MB') AS '所有库容量 MB' FROM information_schema.TABLES;
+
+#查看数据库容量（需要改动 ‘数据库名称’ 已实际使用为主，注意名称需要单引号引起来）
+
+SELECT concat(round(sum(DATA_LENGTH/1024/1024),2),'MB') AS '数据库容量 单位MB' FROM information_schema.TABLES WHERE table_schema='数据库名称';
+
+#查看表容量（需要改动 '数据库名称' 和 '要查询的表名称' 已实际使用为主，注意名称需要单引号引起来）
+
+SELECT concat(round(sum(DATA_LENGTH/1024/1024),2),'MB') AS '表容量 单位MB' FROM information_schema.TABLES WHERE table_schema='数据库名称' AND table_name='要查询的表名称';
+
+#查看数据库索引容量（需要改动 ‘数据库名称’ 已实际使用为主，注意名称需要单引号引起来 ）
+
+SELECT CONCAT(ROUND(SUM(index_length)/(1024*1024), 2), ' MB') AS 'Total Index Size' FROM information_schema.TABLES WHERE table_schema = '数据库名称';
+
+#查看表的索引容量（需要改动 '数据库名称' 和 '要查询的表名称' 已实际使用为主，注意名称需要单引号引起来）
+
+SELECT CONCAT(ROUND(SUM(index_length)/(1024*1024), 2), ' MB') AS 'Total Index Size' FROM TABLES WHERE table_schema = '数据库名称' and table_name='要查询的表名称';

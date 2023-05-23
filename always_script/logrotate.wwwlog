@@ -1,0 +1,11 @@
+/www/wwwlogs/*.log {
+    daily          #每日轮询
+    missingok      #如果日志不存在,则忽略该日志的警告信患
+    rotate 7       #保留7天(个备份文件)
+    compress       #压缩
+    notifempty     #如果曰志为空文件，則不进行日志轮替
+    create         #建立新日志
+    dateext        #使用日期作为日志轮替文件的后缀，log-20230410
+    copytruncate   #主要用于还在打开中的文件，把当前的日志备份并截断
+    sharedscripts  #在此关键宇之后的脚本只执行一次
+}
