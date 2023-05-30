@@ -1,0 +1,18 @@
+安装libsodium
+
+1.下载libsodium安装包
+wget https://github.com/jedisct1/libsodium/releases/download/1.0.11/libsodium-1.0.11.tar.gz
+2.tar xf libsodium-1.0.11.tar.gz
+3.cd libsodium-1.0.11
+4../configure && make -j2 && make install
+5.echo /usr/local/lib > /etc/ld.so.conf.d/usr_local_lib.conf
+
+
+安装php的libsodium扩展
+1.下载包
+wget http://pecl.php.net/get/libsodium-1.0.7.tgz
+2.使用pecl安装
+pecl install libsodium-1.0.7.tgz
+3.修改权限
+chmod 755 libsodium.so
+4.重启php
