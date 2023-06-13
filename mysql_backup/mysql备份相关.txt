@@ -1,3 +1,9 @@
+长沙公共库  修改appinfodb的代码，重新编译发布以后，如果修改不生效[2023/5/31 9:36:19] [root@web-ggk dist]# nohup ./appinfodb --port=6061  >> appinfodb.log 2>&1 &
+nohup ./appinfodb --port=6061  >> appinfodb.log 2>&1 &
+nohup ./appinfodb --port=6062  >> appinfodb.log 2>&1 &
+nohup ./appinfodb --port=6063  >> appinfodb.log 2>&1 &
+
+
 处理挖矿  kdevtmpfsi
 [root@app-tiktok-online ~]# ps -ef |grep kdevtmpfsi
 www      18897     1 99 10:37 ?        00:00:10 /tmp/kdevtmpfsi
@@ -17,17 +23,17 @@ root     18908 18839  0 10:37 pts/1    00:00:00 grep --color=auto kdevtmpfsi
 kill -9 16376 18897
 然后就没了
 
-redis创建用户：
-
-acl setuser bbb  #创建用户
-acl setuser bbb on >123 +@all #添加密码
-acl setuser bbb ~* +get #授权
 
 find 查找某年的文件
 find . -newermt "2021-01-01" ! -newermt "2021-12-31" -name "*.tar.gz"
 删除某个目录下2021年的文件
 find . -newermt "2021-01-01" ! -newermt "2021-12-31" -name "*.tar.gz" -exec rm -rf {} \;
 
+redis创建用户：
+
+acl setuser bbb  #创建用户
+acl setuser bbb on >123 +@all #添加密码
+acl setuser bbb ~* +get #授权
 
 清理history相关
 sed -i 'n,1000d' -i ~/.bash_history && history -c && history -r
@@ -56,8 +62,12 @@ mysqldump -uroot -p -d idongdong_stat > idongdong_stat.sql
 MySQL查看事件是否开启状态（on为开启 off为关闭）
 SHOW VARIABLES LIKE  'event_scheduler'
 
-设置当前事件开启
+设置当前事件开启（临时开启）
 SET GLOBAL event_scheduler = 1;
+
+永久开启
+在my.cnf的[mysqld]event_scheduler = ON
+
 
 使用show所有事件sql语句
 show events;
