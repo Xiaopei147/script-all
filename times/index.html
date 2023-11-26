@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>炫酷時鐘與日期</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            margin: 100px;
+            background-color: #282c34;
+            color: #61dafb;
+            transition: background-color 0.5s, color 0.5s;
+        }
+
+        #clock {
+            font-size: 3em;
+            margin-bottom: 20px;
+            transition: color 0.5s;
+        }
+
+        #date {
+            font-size: 1.5em;
+            color: #aaa;
+            transition: color 0.5s;
+        }
+    </style>
+</head>
+<body>
+    <div id="clock"></div>
+    <div id="date"></div>
+
+    <script>
+        function updateClock() {
+            var now = new Date();
+
+            var hours = now.getHours();
+            var minutes = now.getMinutes();
+            var seconds = now.getSeconds();
+
+            // 將小於10的數字前面加上0
+            hours = hours < 10 ? '0' + hours : hours;
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+
+            var timeString = hours + ':' + minutes + ':' + seconds;
+
+            document.getElementById('clock').innerHTML = timeString;
+
+            var days = ['星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+            var day = days[now.getDay()];
+
+            var months = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
+            var month = months[now.getMonth()];
+
+            var dateString = day + ', ' + now.getDate() + ' ' + month + ' ' + now.getFullYear();
+
+            document.getElementById('date').innerHTML = dateString;
+        }
+
+        // 每秒更新一次時間
+        setInterval(updateClock, 1000);
+
+        // 頁面加載時初始化時間
+        window.onload = updateClock;
+    </script>
+</body>
+</html>
