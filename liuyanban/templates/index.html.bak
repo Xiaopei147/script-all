@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>留言板</title>
+</head>
+<body>
+    <h1>留言板</h1>
+    <form id="messageForm">
+        <label for="email">邮箱：</label>
+        <input type="email" id="email" name="email" required><br>
+        <label for="nickname">昵称：</label>
+        <input type="text" id="nickname" name="nickname" required><br>
+        <label for="content">留言内容：</label><br>
+        <textarea id="content" name="content" rows="4" cols="50" required></textarea><br>
+        <input type="submit" value="提交留言">
+        <input type="hidden" id="publicIP" name="publicIP" value="">
+    </form>
+
+    <script>
+        document.getElementById('messageForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            var formData = new FormData(this);
+            fetch('/submit_message', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert(data);
+                document.getElementById('messageForm').reset();
+            });
+        });
+
+        // 使用第三方服务获取公网IP地址
+        fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => {
+                var publicIP = data.ip;
+                document.getElementById('publicIP').value = publicIP;  // 将公网IP地址设置到隐藏字段中
+            });
+    </script>
+</body>
+</html>
+
