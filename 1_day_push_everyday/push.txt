@@ -1,0 +1,17 @@
+#!/bin/bash
+message=`curl -s https://international.v1.hitokoto.cn/ |awk -F ':' '{print $4}'|awk -F '"' '{print $2}'`
+# 替换为你微信的API密钥
+API_TOKEN="AT_EC8SeSXXE24W8se7xELDn2k7"
+
+# 构建消息内容
+MESSAGE='{
+  "appToken": "'$API_TOKEN'",
+  "content": "'$message'",
+  "contentType": 1,
+  "uids": ["UID_kD9DlZ0kn7omTOZGhJUm3rA7A2lz"],
+  "url": "https://wxpusher.zjiecode.com",
+  "verifyPay": false
+}'
+
+# 发送POST请求
+curl -X POST -H "Content-Type: application/json" -d "$MESSAGE" https://wxpusher.zjiecode.com/api/send/message

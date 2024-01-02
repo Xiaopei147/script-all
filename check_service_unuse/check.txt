@@ -1,0 +1,29 @@
+#!/bin/bash
+date=`date`
+data=`cat /root/script-all/web-check/url_edit.list`
+for url in $data
+do
+code=$(wget --server-response --max-redirect=1 -O /dev/null "$url" 2>&1 | awk '/^  HTTP/{print $2}' | tail -n 1)
+if [ $code -ne 200 ] && [ $code -ne 302 ];
+then 
+   curl 'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=7a2700dc-f854-43bc-9fe8-34fa7dc8428b' \
+    -H 'Content-Type: application/json' \
+    -d '{"msgtype": "text", "text": {"content": "'$url' is down, status code: '$code'"}}'
+     # 替换为你的API密钥
+        API_TOKEN="AT_EC8SeSXXE24W8"
+
+        # 构建消息内容
+        MESSAGE='{
+          "appToken": "'$API_TOKEN'",
+          "content": "网站：'$url'出现状态码：'$code'故障，请及时查看",
+          "contentType": 1,
+          "uids": ["UID_kD9DlZ0kn7omTOZGhJUm3rA7A2lz"],
+          "url": "https://wxpusher.zjiecode.com",
+          "verifyPay": false
+        }'
+
+        # 发送POST请求
+        curl -X POST -H "Content-Type: application/json" -d "$MESSAGE" https://wxpusher.zjiecode.com/api/send/message
+fi
+#echo "HTTP Status of $url is $code ">>/root/tst/result.log
+done

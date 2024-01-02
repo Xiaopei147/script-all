@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# 获取天气信息
+RESULT=$(curl -s https://www.yiketianqi.com/free/day\?appid\=88398691\&appsecret\=4O9jJ9Tz\&unescape\=1\&cityid\=CN101020100)
+
+# 输出天气情况
+WEATHER=$(echo $RESULT | jq -r '.wea')
+TEMP=$(echo $RESULT | jq -r '.tem_day')"➖"$(echo $RESULT | jq -r '.tem_night')
+WIN=$(echo $RESULT | jq -r '.win')","$(echo $RESULT | jq -r '.win_speed')
+AIR=$(echo $RESULT | jq -r '.air')
+CITY="上海"  # 你要查询的城市
+TIME=$(date +"%Y-%m-%d %H:%M:%S")  # 当前时间
+day=`curl -s curl -s https://international.v1.hitokoto.cn/ |awk -F ':' '{print $4}'|awk -F '"' '{print $2}'`
+
+# 根据天气情况输出不同的信息
+if [ $WEATHER == "晴" ] ; then
+    INFO="今日天气：$WEATHER ☀️，今天有阳光，午休时间可以去散散步～"
+elif [ $WEATHER == "云" ] || [ $WEATHER == "多云" ]; then
+    INFO="今日天气：$WEATHER ☁️，多出门呼吸新鲜空气哟～"
+elif [ $WEATHER == "阴" ] || [ $WEATHER == "多云转阴" ]; then
+    INFO="今日天气：$WEATHER ⛅，今天是阴天，但心情不要是阴天"
+elif [ $WEATHER == "雨" ] || [ $WEATHER == "小雨" ] || [ $WEATHER == "中雨" ] || [ $WEATHER == "大雨" ]; then
+    INFO="今日天气：$WEATHER 🌧️，今天有雨，记得带伞"
+else
+    INFO="今日天气：$WEATHER ⭐，新的一天开始了"
+fi
+
+# 发送天气信息到企业微信群
+curl 'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=aba0e240-81e4-' \
+-H 'Content-Type: application/json' \
+-d "{\"msgtype\":\"markdown\",\"markdown\":{\"content\": \" 城市：$CITY \\n 时间：$TIME \\n $INFO \\n 每日一句：$day \\n >温度: $TEMP \\n >风力: $WIN \\n >空气质量: $AIR \"}}"
